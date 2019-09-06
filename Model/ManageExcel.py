@@ -7,7 +7,7 @@ from Model import RuleEngine
 
 ColumnNameSet = ['Nickname','Analyzer ID','Date','Time','Sample No.','Measurement Mode','Discrete','WBC(10^3/uL)','RBC(10^6/uL)','HGB(g/dL)','HCT(%)','IRF(%)','MCH(pg)','MCHC(g/dL)','MCV(fL)','PLT(10^3/uL)','RDW-SD(fL)','RET#(10^6/uL)','RET%(%)','IRF(%)'] #'Off Score (10*Hb(g/dL)-60*square root(ret%))'
 ColumnLabelSet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S']
-ColumnWideSet = [10,12,22,20,16,8,18,15,13,12,7,7,7,10,10,8,8,8,8,7,20]
+ColumnWideSet = [14,12,27,27,16,17,18,15,13,12,7,7,7,10,10,8,8,8,8,7,20]
 MaxCol = 155
 
 def MainExcel(DataDict):
@@ -17,24 +17,30 @@ def MainExcel(DataDict):
     ThisWorkBook = CreateWorkBook() #Create new excel file
     
     ListExcel = ConvertCSVtoList(InputPathFile) #List of Excel row by row
-    ConvertTextValue(ListExcel)
-    ConvertHeader(ListExcel)
     HeaderSheet = ListExcel.pop(0) #get header first row of input
     DeleteExcessColumn(ListExcel) #delete unuse column
     RuleEngine.CreateOffScore(ListExcel) #calculate formular
+    ConvertTextValue(ListExcel)
+    ConvertHeader(ListExcel)
     AppendToWorkbook(ThisWorkBook, ListExcel, HeaderSheet) #append remain row to new excel file
 
     
     #Design Excel
     Row = len(ListExcel)
-    Col = 19 #Fix Value
+    Col = 20 #Fix Value
     FixColumnWide(ThisWorkBook) #set width
-    FillHeader(ThisWorkBook) #add fix text
+    FillHeader(ThisWorkBook, Col) #add fix text
     FixBorder(ThisWorkBook, Row, Col) #add border
     
     #Save WorkBook
     print("Save Excel File ...")
     ThisWorkBook.save(OutputPathFile)
+
+def SwapColumn(ColA,ColB,ListExcel):
+    #Next coding swap column@@@@@@@@@@@@@@@@@
+    
+    
+    return 0
 
 def ConvertTextValue(ListExcel):
     for row in ListExcel:
@@ -43,8 +49,9 @@ def ConvertTextValue(ListExcel):
 
 def ConvertHeader(ListExcel):
     HeaderRow = ListExcel[0]
-    for Header in HeaderRow:
-        Header = RuleEngine.TextValue(Header)
+    for idx, Header in enumerate(HeaderRow):
+        HeaderRow[idx] = RuleEngine.TextValue(HeaderRow[idx])
+    #print(HeaderRow);sys.exit()
     return ListExcel
 
 def AppendToWorkbook(ThisWorkBook,ListExcel, HeaderSheet):
@@ -78,13 +85,14 @@ def MarkDeleteColumn(ListExcel):
     print("MarkDeleteColumn: Done")
     return Pos_False
 
-def FillHeader(ThisWorkBook):
+def FillHeader(ThisWorkBook, Col):
     ThisWorkSheet = ThisWorkBook.active
     #Header Analyzer Value
-    for idx in range(7,19):
+    for idx in range(7,Col):
         ThisWorkSheet.cell(2,idx).fill =StyleSheet("FillYellow")
     #Header Rule Engine
-    ThisWorkSheet.cell(2,19).fill =StyleSheet("FillPurple")
+    ThisWorkSheet.cell(2,Col).fill =StyleSheet("FillPurple") #Offscore fill color purple
+    
     
 def CreateMetrixExcel(ThisWorkBook):
     print("CreateMetrixExcel ...")
