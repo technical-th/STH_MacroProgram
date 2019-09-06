@@ -58,6 +58,11 @@ def TextValue(Key):
     ValueReturn = ""
     TextValueDict = {}
     TextValueDict['XN-1000-1-A'] = 'XN-1000'
+    TextValueDict['Nickname'] = 'Type of analyzer'
+    TextValueDict['Date'] = 'Date of analysis of the sample'
+    TextValueDict['Time'] = 'Time of analysis of the sample'
+    
+    
     if Key in TextValueDict.keys(): ValueReturn = TextValueDict[Key]
     else: ValueReturn = Key
     return ValueReturn

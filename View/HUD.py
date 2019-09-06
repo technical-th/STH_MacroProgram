@@ -13,7 +13,7 @@ TargetPath = "none"
 #Initialize
 widget.setGeometry(250, 200, 550, 135)
 widget.setFixedSize(550, 135)
-widget.setWindowTitle('XN-1000 Excel Convert (ver2.0)')
+widget.setWindowTitle('XN-1000 Excel Convert (ver2.1)')
 
 #Widget
 headerText = QLabel(widget)

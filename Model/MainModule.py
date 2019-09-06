@@ -18,7 +18,7 @@ def Runtime(InputPath):
  
 InputPath = 'C:/Users/sjg/Desktop/STH; Macro program XN-1000/INPUT (05032019).csv'
 #InputPath = 'C:/Users/sjg/Desktop/STH; XN-1000 Filter Excel/Source 4/INPUT (24042019_Corrupt).csv'
-Status = Runtime(InputPath)
-print(Status)
+# Status = Runtime(InputPath)
+# print(Status)
 
 
