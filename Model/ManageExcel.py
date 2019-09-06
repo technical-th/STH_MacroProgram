@@ -7,7 +7,7 @@ from Model import RuleEngine
 
 ColumnNameSet = ['Nickname','Analyzer ID','Date','Time','Sample No.','Measurement Mode','Discrete','WBC(10^3/uL)','RBC(10^6/uL)','HGB(g/dL)','HCT(%)','IRF(%)','MCH(pg)','MCHC(g/dL)','MCV(fL)','PLT(10^3/uL)','RDW-SD(fL)','RET#(10^6/uL)','RET%(%)','IRF(%)'] #'Off Score (10*Hb(g/dL)-60*square root(ret%))'
 ColumnLabelSet = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S']
-ColumnWideSet = [14,12,27,27,16,17,18,15,13,12,7,7,7,10,10,8,8,8,8,7,20]
+ColumnWideSet = [20,12,27,27,16,19,18,15,13,12,7,7,7,10,10,8,8,8,8,7,20]
 MaxCol = 155
 
 def MainExcel(DataDict):
@@ -22,8 +22,10 @@ def MainExcel(DataDict):
     RuleEngine.CreateOffScore(ListExcel) #calculate formular
     ConvertTextValue(ListExcel)
     ConvertHeader(ListExcel)
+    SwapColumn(0,4,ListExcel) #Swap column
     AppendToWorkbook(ThisWorkBook, ListExcel, HeaderSheet) #append remain row to new excel file
-
+    
+    
     
     #Design Excel
     Row = len(ListExcel)
@@ -38,9 +40,24 @@ def MainExcel(DataDict):
 
 def SwapColumn(ColA,ColB,ListExcel):
     #Next coding swap column@@@@@@@@@@@@@@@@@
-    
-    
-    return 0
+    TempColA = []
+    TempColB = []
+    for Row in ListExcel:
+        #if Row == ListExcel[0]: continue #Skip first row
+        for idx, Val in enumerate(Row):
+            if idx == ColA:
+                TempColA.append(Row[idx])
+            elif idx == ColB:
+                TempColB.append(Row[idx])
+    #---------------------------------------------------------
+    for idy, Row in enumerate(ListExcel):
+        for idx, Val in enumerate(Row):
+            if idx == ColA:
+                Row[idx] = TempColB[idy]
+            elif idx == ColB:
+                Row[idx] = TempColA[idy]
+        
+    return ListExcel
 
 def ConvertTextValue(ListExcel):
     for row in ListExcel:
